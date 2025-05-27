@@ -2,12 +2,14 @@ package com.bridgelabz.cryptotracker.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity; // ✅ Add this
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableMethodSecurity  //  enables @PreAuthorize to work
 public class SecurityConfig {
 
     // Password encoder bean (used in UserService)
@@ -20,12 +22,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Turn off CSRF for testing
+            .csrf(csrf -> csrf.disable()) // Disable CSRF for testing
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll() // allow register/login
-                .anyRequest().authenticated() // everything else = login required
+                .requestMatchers("/api/auth/**").permitAll() // Allow registration/login without login
+                .anyRequest().authenticated() // All other endpoints require login
             )
-            .httpBasic(); // use basic auth (easy for testing)
+            .httpBasic(); // Basic Auth for quick testing via Postman
 
         return http.build();
     }
