@@ -19,8 +19,7 @@ public class PortfolioManagementController {
     @Autowired
     private PortfolioManagementService service;
 
-
-    @PostMapping("/portfolio/add")
+    @PostMapping("/add") 
     public ResponseEntity<?> create(@Valid @RequestBody PortfolioManagementEntity crypto, BindingResult result) {
         if (result.hasErrors()) {
             List<String> errors = result.getAllErrors()
@@ -32,12 +31,12 @@ public class PortfolioManagementController {
         return ResponseEntity.ok(service.create(crypto));
     }
 
-    @GetMapping("/portfolio/my")
+    @GetMapping("/my") 
     public List<PortfolioManagementEntity> getAll() {
         return service.getAll();
     }
 
-    @PutMapping("/portfolio/update/{id}")
+    @PutMapping("/update/{id}") 
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody PortfolioManagementEntity newCrypto) {
         if (newCrypto.getId() == null) {
             return ResponseEntity.badRequest().body(null);
@@ -47,7 +46,7 @@ public class PortfolioManagementController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/portfolio/delete/{id}")
+    @DeleteMapping("/delete/{id}") 
     public ResponseEntity<?> delete(@PathVariable Long id) {
         return service.delete(id)
                 ? ResponseEntity.ok("Cryptoportfolio deleted")
